@@ -28,7 +28,7 @@ defmodule PastebinEx do
     end
 
     post "/" do
-      send_resp(conn, 201, "http://www.example.com/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6")
+      send_resp(conn, 201, "#{base_url(conn)}/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6")
     end
 
     get "/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6" do
