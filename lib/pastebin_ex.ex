@@ -31,6 +31,10 @@ defmodule PastebinEx do
       send_resp(conn, 201, "http://www.example.com/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6")
     end
 
+    get "/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6" do
+      send_resp(conn, 200, "hello world!")
+    end
+
     match _ do
       send_resp(conn, 404, "404")
     end

@@ -36,4 +36,14 @@ Usage:
     assert conn.status == 201
     assert conn.resp_body == "http://www.example.com/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6"
   end
+
+  test "getting a paste" do
+    conn = conn(:get, "/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6")
+
+    conn = AppRouter.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert conn.resp_body == "hello world!"
+  end
 end
