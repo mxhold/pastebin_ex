@@ -23,13 +23,21 @@ defmodule PastebinEx do
     plug :dispatch
 
     get "/" do
-      base_url = "#{conn.scheme}://#{conn.host}:#{conn.port}"
-      page_contents = EEx.eval_file("lib/views/usage.html.eex", [base_url: base_url])
+      page_contents = EEx.eval_file("lib/views/usage.html.eex", [base_url: base_url(conn)])
       send_resp(conn, 200, page_contents)
+    end
+
+    post "/" do
+      send_resp(conn, 201, "http://www.example.com/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6")
     end
 
     match _ do
       send_resp(conn, 404, "404")
+    end
+
+    def base_url(conn) do
+      port_part = if conn.port == 80 do "" else ":#{conn.port}" end
+      "#{conn.scheme}://#{conn.host}#{port_part}"
     end
   end
 end

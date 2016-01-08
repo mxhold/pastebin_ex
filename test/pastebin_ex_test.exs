@@ -26,4 +26,14 @@ Usage:
 </pre>
 """
   end
+
+  test "posting a paste" do
+    conn = conn(:post, "/", "hello world!")
+
+    conn = AppRouter.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 201
+    assert conn.resp_body == "http://www.example.com/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6"
+  end
 end
