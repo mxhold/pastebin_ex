@@ -1,0 +1,9 @@
+<pre>
+Usage:
+
+  $ echo "hello, world" | curl <%= base_url %> --data-binary @-
+  <%= base_url %>/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6
+
+  $ curl <%= base_url %>/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6
+  hello, world
+</pre>
