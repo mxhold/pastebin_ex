@@ -1,19 +1,15 @@
 # PastebinEx
 
-**TODO: Add description**
+## Getting started
 
-## Installation
+Run `mix deps.get` and then `./bin/server` to start the server on [http://localhost:4000].
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+## Usage
 
-  1. Add pastebin_ex to your list of dependencies in `mix.exs`:
+```bash
+$ echo "hello, world" | curl http://localhost --data-binary @-
+http://localhost:4000/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6
 
-        def deps do
-          [{:pastebin_ex, "~> 0.0.1"}]
-        end
-
-  2. Ensure pastebin_ex is started before your application:
-
-        def application do
-          [applications: [:pastebin_ex]]
-        end
+$ curl http://localhost:4000/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6
+hello, world
+```
