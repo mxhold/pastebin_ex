@@ -27,18 +27,22 @@ Usage:
 """
   end
 
-  test "posting a paste" do
+  test "posting and getting a paste" do
     conn = conn(:post, "/", "hello world!")
 
     conn = AppRouter.call(conn, @opts)
 
     assert conn.state == :sent
     assert conn.status == 201
-    assert conn.resp_body == "http://www.example.com/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6"
-  end
 
-  test "getting a paste" do
-    conn = conn(:get, "/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6")
+    url = conn.resp_body
+    uuid = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+    base_url = Regex.escape("http://www.example.com/")
+    url_regex = Regex.compile!("#{base_url}#{uuid}")
+    assert Regex.match?(url_regex, url)
+
+    paste_name = String.split(url, "/") |> List.last
+    conn = conn(:get, "/#{paste_name}")
 
     conn = AppRouter.call(conn, @opts)
 

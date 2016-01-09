@@ -15,7 +15,7 @@ defmodule PastebinEx.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [
-      applications: [:logger, :cowboy, :plug],
+      applications: [:logger, :postgrex, :ecto, :cowboy, :plug],
       mod: {PastebinEx, []},
     ]
   end
@@ -33,6 +33,8 @@ defmodule PastebinEx.Mixfile do
     [
       {:cowboy, "~> 1.0.0"},
       {:plug, "~> 1.0"},
+      {:postgrex, ">= 0.0.0"},
+      {:ecto, "~> 1.1"},
     ]
   end
 end

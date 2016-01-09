@@ -28,3 +28,9 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env}.exs"
+
+config :pastebin_ex, PastebinEx.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "pastebin",
+  username: "postgres",
+  password: "postgres"
