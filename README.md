@@ -2,7 +2,7 @@
 
 ## Getting started
 
-Run `mix deps.get` and then `./bin/server` to start the server on [http://localhost:4000].
+Run `mix deps.get` and then `./bin/server` to start the server on [http://localhost:4000](http://localhost:4000).
 
 ## Usage
 
