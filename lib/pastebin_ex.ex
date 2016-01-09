@@ -31,7 +31,13 @@ defmodule PastebinEx do
       timestamps
     end
 
-    def find(name) do
+    def fetch(name) do
+      with {:ok, name} <- Ecto.UUID.cast(name),
+           {:ok, paste} <- do_fetch(name),
+           do: {:ok, paste}
+    end
+
+    defp do_fetch(name) do
       case Repo.get(__MODULE__, name) do
         nil -> :error
         paste -> {:ok, paste}
@@ -60,16 +66,9 @@ defmodule PastebinEx do
     end
 
     match "/:name" do
-      result = with {:ok, name} <- Ecto.UUID.cast(name),
-                    {:ok, paste} <- Paste.find(name),
-                    do: {:ok, paste}
-
-      case result do
-        {:ok, paste} ->
-          paste = Repo.get(Paste, name)
-          send_resp(conn, 200, paste.body)
-        :error ->
-          not_found(conn)
+      case Paste.fetch(name) do
+        {:ok, paste} -> send_resp(conn, 200, paste.body)
+        :error -> not_found(conn)
       end
     end
 
