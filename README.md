@@ -1,5 +1,9 @@
 # PastebinEx
 
+PastebinEx is a simple pastebin service written in
+[Elixir](http://elixir-lang.org) using
+[Plug](https://github.com/elixir-lang/plug).
+
 ## Getting started
 
 Run `mix deps.get` and then `./bin/server` to start the server on [http://localhost:4000](http://localhost:4000).
