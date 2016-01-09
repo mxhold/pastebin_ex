@@ -30,16 +30,12 @@ defmodule PastebinEx do
       field :body
       timestamps
     end
-  end
 
-  defmodule Query do
-    import Ecto.Query
-
-    def paste(name) do
-      query = from p in Paste,
-            where: p.name == ^name,
-            select: p
-      Repo.one(query)
+    def find(name) do
+      case Repo.get(__MODULE__, name) do
+        nil -> :error
+        paste -> {:ok, paste}
+      end
     end
   end
 
@@ -50,7 +46,10 @@ defmodule PastebinEx do
     plug :dispatch
 
     get "/" do
-      page_contents = EEx.eval_file("lib/views/usage.html.eex", [base_url: base_url(conn)])
+      page_contents = EEx.eval_file(
+        "lib/views/usage.html.eex",
+        [base_url: base_url(conn)]
+      )
       send_resp(conn, 200, page_contents)
     end
 
@@ -61,11 +60,24 @@ defmodule PastebinEx do
     end
 
     match "/:name" do
-      paste = Query.paste(name)
-      send_resp(conn, 200, paste.body)
+      result = with {:ok, name} <- Ecto.UUID.cast(name),
+                    {:ok, paste} <- Paste.find(name),
+                    do: {:ok, paste}
+
+      case result do
+        {:ok, paste} ->
+          paste = Repo.get(Paste, name)
+          send_resp(conn, 200, paste.body)
+        :error ->
+          not_found(conn)
+      end
     end
 
     match _ do
+      not_found(conn)
+    end
+
+    def not_found(conn) do
       send_resp(conn, 404, "404")
     end
 

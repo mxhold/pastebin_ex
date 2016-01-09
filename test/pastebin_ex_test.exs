@@ -50,4 +50,22 @@ Usage:
     assert conn.status == 200
     assert conn.resp_body == "hello world!"
   end
+
+  test "invalid paste name returns 404" do
+    conn = conn(:get, "/foo")
+
+    conn = AppRouter.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 404
+  end
+
+  test "nonexistant paste returns 404" do
+    conn = conn(:get, "/3cdf55b6-2ffe-42c9-97be-d94ef66e58c6")
+
+    conn = AppRouter.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 404
+  end
 end
