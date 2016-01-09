@@ -31,6 +31,10 @@ defmodule PastebinEx do
       timestamps
     end
 
+    def insert(body: body) do
+      Repo.insert(%Paste{body: body})
+    end
+
     def fetch(name) do
       with {:ok, name} <- Ecto.UUID.cast(name),
            {:ok, paste} <- do_fetch(name),
@@ -61,7 +65,7 @@ defmodule PastebinEx do
 
     post "/" do
       {:ok, body, _} = Plug.Conn.read_body(conn)
-      {:ok, paste} = PastebinEx.Repo.insert(%Paste{body: body})
+      {:ok, paste} = Paste.insert(body: body)
       send_resp(conn, 201, "#{base_url(conn)}/#{paste.name}")
     end
 
