@@ -71,7 +71,10 @@ defmodule PastebinEx do
 
     match "/:name" do
       case Paste.fetch(name) do
-        {:ok, paste} -> send_resp(conn, 200, paste.body)
+        {:ok, paste} ->
+          conn
+          |> put_resp_content_type("text/plain")
+          |> send_resp(200, paste.body)
         :error -> not_found(conn)
       end
     end

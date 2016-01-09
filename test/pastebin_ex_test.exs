@@ -49,6 +49,10 @@ Usage:
     assert conn.state == :sent
     assert conn.status == 200
     assert conn.resp_body == "hello world!"
+    {_, content_type} = Enum.find(conn.resp_headers, fn {k, _} ->
+      k == "content-type"
+    end)
+    assert content_type == "text/plain; charset=utf-8"
   end
 
   test "invalid paste name returns 404" do
